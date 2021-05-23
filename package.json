@@ -1,0 +1,16 @@
+{
+  "name": "GameBot_JS",
+  "version": "1.0.0",
+  "description": "",
+  "main": "help.js",
+  "dependencies": {
+    "discord.js": "^12.5.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
