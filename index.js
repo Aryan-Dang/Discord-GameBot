@@ -1,8 +1,8 @@
-import { TicTacToe } from './tictactoe.js';
+//import { TicTacToe } from './tictactoe.js';
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const TOKEN = "Nzc5NzU4MzYzMjE5MDY2OTAw.X7lMkQ.lorJEyLiTA5h4AR9qv_OBOzMEEs";
-let tic = new TicTacToe();
+//let tic = new TicTacToe();
 
 
 client.once('ready', () => {
@@ -20,8 +20,8 @@ client.on('message', message => {
 
     if(command === 'tictactoe'){
         message.channel.send('tictactoe game starting');
-        tic.reset();
-        tic.print();
+        //tic.reset();
+        //tic.print();
     }
 
 

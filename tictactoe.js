@@ -67,7 +67,7 @@ class TicTacToe{
 
 }
 
-export { TicTacToe };
+//export { TicTacToe };
 
 //let b = new TicTacToe();
 // console.log(b.print());
