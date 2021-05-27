@@ -28,15 +28,12 @@ client.on('message', message => {
 
         reacts = game.remNos.map(g => noMappings[g.toString()]);
         
-        const filter = (reaction,user) => {
-            console.log(reaction.emoji.name);
-            return true;
-        }
+        const filter = (reaction,user) => !user.bot;
 
         let newMsg = message.channel.send(game.print())
         .then(m => {
             reacts.forEach(r => m.react(r))
-            const collector = m.createReactionCollector(filter, { time: 30000 });
+            const collector = m.createReactionCollector(filter, { max : 1, time: 30000 });
 
             collector.on('collect', (reaction, user) => {
                 m.channel.send(`Collected ${reaction.emoji.name} from ${user.tag}`);
@@ -48,7 +45,6 @@ client.on('message', message => {
             
         })
         .catch(m => console.log(m));
-
     }
 
 });
