@@ -1,9 +1,12 @@
 class TicTacToe{
-    constructor(){
+    constructor(name1,name2){
         this.board = [[3,1,2],[6,4,5],[9,7,8]];
         this.remNos = this.board.reduce( (acc,row) => acc.concat(row) ,[]).sort();
-        //TODO: Add setter for signs of player (getting names through discord)
-        this.signs = {}
+        this.nameSign = {};
+        this.nameSign[name1] = 'X';
+        this.nameSign[name2] = 'O';
+        this.prevMove;
+        // this.signs = {}
         //game ends if someone has won or if there's a tie been declared
         this.isOver = false;
     }
@@ -24,8 +27,10 @@ class TicTacToe{
         //if that place hasn't been played on yet
         if(typeof this.board[row][pos] === 'number'){
             this.remNos = this.remNos.filter(num => num !== this.board[row][pos]);
-            //maybe make player as name and map that internally to X/O
-            this.board[row][pos] = player;
+            const sign = this.nameSign[player];
+            console.log(Object.entries(this.nameSign))
+            if(sign === undefined) return `${player} is not playing the game. nameSign is : ${this.nameSign}`;
+            this.board[row][pos] = sign;
             return `${player} moved at ${num}`;
         }
         else{
