@@ -11,7 +11,7 @@ let reacts = [];
 const filter = (reaction,user) => !user.bot;
 
 //double check filter function with 2 players
-const filter2 = (reaction,user) => !user.bot;// && user.username !== game.prevMove;
+const filter2 = (reaction,user) => !user.bot && user.username !== game.prevMove;
 
 function playGame(message){
     reacts = game.remNos.map(g => noMappings[g.toString()]);
