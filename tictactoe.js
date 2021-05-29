@@ -1,7 +1,12 @@
 class TicTacToe{
-    constructor(){
+    constructor(name1,name2){
         this.board = [[3,1,2],[6,4,5],[9,7,8]];
         this.remNos = this.board.reduce( (acc,row) => acc.concat(row) ,[]).sort();
+        this.nameSign = {};
+        this.nameSign[name1] = 'X';
+        this.nameSign[name2] = 'O';
+        this.prevMove;
+        // this.signs = {}
         //game ends if someone has won or if there's a tie been declared
         this.isOver = false;
     }
@@ -9,11 +14,9 @@ class TicTacToe{
     //prints board
     //print() : string
     print(){
-        const formatter = (acc,row) => acc.concat(`${row[1]} ${row[2]} ${row[0]}\n`);
+        const formatter = (acc,row) => acc.concat(`${row[1]}    ${row[2]}    ${row[0]}\n`);
         return this.board.reduce( formatter,"");
     }
-
-    //print after each move too
 
     //used to execute move on board
     move(num,player){
@@ -24,12 +27,16 @@ class TicTacToe{
         //if that place hasn't been played on yet
         if(typeof this.board[row][pos] === 'number'){
             this.remNos = this.remNos.filter(num => num !== this.board[row][pos]);
-            this.board[row][pos] = player;
-            //call check to win ?
-            //success string ?
+            const sign = this.nameSign[player];
+            console.log(Object.entries(this.nameSign))
+            if(sign === undefined) return `${player} is not playing the game. nameSign is : ${this.nameSign}`;
+            this.board[row][pos] = sign;
+            this.prevMove = player;
+            this.checkCond();
+            return `${player} moved at ${num}`;
         }
         else{
-            //how to tell that position hasn't been moved yet
+            return "Can't move to that place.";
         }
     }
 
