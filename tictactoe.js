@@ -31,6 +31,7 @@ class TicTacToe{
             console.log(Object.entries(this.nameSign))
             if(sign === undefined) return `${player} is not playing the game. nameSign is : ${this.nameSign}`;
             this.board[row][pos] = sign;
+            this.prevMove = player;
             return `${player} moved at ${num}`;
         }
         else{
