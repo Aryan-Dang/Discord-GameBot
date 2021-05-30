@@ -43,7 +43,7 @@ class TicTacToe{
     //check winning condition and return winning player
     //checkCond() : string
     checkCond(){
-        if(this.board[0][1] === this.board[1][2] && this.board[0][1] === this.board[2][0]){
+        if(this.board[0][1] === this.board[2][0] && this.board[0][1] === this.board[1][2]){
             this.isOver = true;
             return this.board[1][1];
         }
