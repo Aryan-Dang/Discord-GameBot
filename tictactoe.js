@@ -43,6 +43,15 @@ class TicTacToe{
     //check winning condition and return winning player
     //checkCond() : string
     checkCond(){
+        if(this.board[0][1] === this.board[2][0] && this.board[0][1] === this.board[1][2]){
+            this.isOver = true;
+            return this.board[1][1];
+        }
+        else if(this.board[0][0] === this.board[1][2] && this.board[0][0] === this.board[2][1]){
+            this.isOver = true;
+            return this.board[1][1];
+        }
+
         for(let i = 0; i < 3; ++i){
             if(this.board[i][0] === this.board[i][1] && this.board[i][0] === this.board[i][2]){
                 this.isOver = true;
@@ -53,33 +62,9 @@ class TicTacToe{
                 return this.board[0][i];
             }
         }
-        if(this.board[0][0] === this.board[1][1] && this.board[2][2] === this.board[0][0]){
-            this.isOver = true;
-            return this.board[1][1];
-        }
-        else if(this.board[0][2] === this.board[1][1] && this.board[2][2] === this.board[2][0]){
-            this.isOver = true;
-            return this.board[1][1];
-        }
         return "";
-    }
-
-    //resets board
-    reset(){
-        this.board = [[3,1,2],[6,4,5],[9,7,8]];
-        this.remNos = this.board.reduce( (acc,row) => acc.concat(row) ,[]).sort();
-        //game ends if someone has won or if there's a tie been declared
-        this.isOver = false;
     }
 
 }
 
 module.exports.TicTacToe = TicTacToe;
-
-//let b = new TicTacToe();
-// console.log(b.print());
-// //console.log(typeof b.board[1][1])
-// console.log(Math.ceil(6/3))
-// console.log(b.move(3,'X'))
-
-

@@ -10,8 +10,10 @@ let reacts = [];
 
 const filter = (reaction,user) => !user.bot;
 
-//double check filter function with 2 players
-const filter2 = (reaction,user) => !user.bot && user.username !== game.prevMove;
+const filter2 = (reaction,user) => !user.bot && user.username !== game.prevMove
+    && game.remNos.map(g => noMappings[g.toString()]).find(str => str === reaction.emoji.name) !== undefined
+    && Object.keys(game.nameSign).find(name => name === user.username) !== undefined;
+;
 
 function playGame(message){
     reacts = game.remNos.map(g => noMappings[g.toString()]);
@@ -22,26 +24,22 @@ function playGame(message){
 }
 
 function performMove(m){
-    reacts.forEach(r => m.react(r))
-    const collector = m.createReactionCollector(filter2, { max : 1, time: 10000 });
+    reacts.forEach(r => m.react(r));
+    const collector = m.createReactionCollector(filter2, {max : 1});
 
-    collector.on('collect', (reaction, user) => {
-        m.channel.send(`${user.username} reacted with ${reaction.emoji.name}`)
-        .then(msg => {
-            const react = reaction.emoji.name;
-            
-            //Object.entries returns an array of form [key,value] then string is converted to number
-            const move = Number(Object.entries(noMappings).find(arr => arr[1] === react)[0]);
-            console.log(move);
-            console.log(game.move(move,user.username));
-            msg.channel.send('!game');
-        });
+    collector.on('collect', async (reaction, user) => {
+        await m.channel.send(`${user.username} reacted with ${reaction.emoji.name}`)
+        const react = reaction.emoji.name;
+        
+        //Object.entries returns an array of form [key,value] then string is converted to number
+        const move = Number(Object.entries(noMappings).find(arr => arr[1] === react)[0]);
+        console.log(move);
+        console.log(game.move(move,user.username));
+
+        game.isOver ? m.channel.send('game is over now') : playGame(m);
+
     });
-    
-    collector.on('end', collected => {
-        console.log(`Collected ${collected.size} items`);
-    });
-    
+
 }
 client.once('ready', () => {
 	console.log('Ready!');
@@ -61,29 +59,27 @@ client.on('message', async message => {
 
         const introMsg = await message.channel.send('tictactoe game starting\nThe 2 people who wish to play should react below')
         let playerNames = [];
-        await introMsg.react('🙋')
-        const collector = introMsg.createReactionCollector(filter, { max : 3, time: 10000 });
+        await introMsg.react('🙋');
+        //prolly remove the time constraint here too but don't move collected code up -- plays a imp role since we've 2 msgs here
+        const collector = introMsg.createReactionCollector(filter, { max : 2, time: 7500 });
         collector.on('collect',(react,user) => {
             introMsg.channel.send(`${user.username} is playing!`);
             playerNames.push(user.username);
         });
         collector.on('end',collected => {
             console.log(playerNames);
-            game = new classFile.TicTacToe(playerNames,'hello');
+            game = new classFile.TicTacToe(...playerNames);
             playGame(message);
         });
 
     }
-
-    if(command === 'game' && message.author.username === 'GameBot'){
-        message.channel.send('sent by GameBot');
-        if(game.isOver){
-            message.channel.send('game is over now :joy:');
-        }
-        else playGame(message);
-    }
-
 });
 
 
 client.login(TOKEN);
+
+//TODO : print who won
+//TODO : Remove reactions from previous messages
+//TODO : Handle errors
+//TODO : player who react first go first
+//TODO: Tie condition checkk better
